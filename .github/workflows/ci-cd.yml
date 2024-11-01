@@ -1,0 +1,52 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out the repository code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # Specify your Node.js version
+
+      # Install dependencies
+      - name: Install Dependencies
+        run: npm install
+
+      # Run tests
+      - name: Run Tests
+        run: npm test  # Replace with your test script
+
+      # Build the application (if applicable)
+      - name: Build Application
+        run: npm run build  # Replace with your build script if needed
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      # Deploy logic (e.g., SSH to server or use a deployment tool like rsync)
+      - name: Deploy to Server
+        env:
+          HOST: ${{ secrets.SERVER_HOST }}
+          USER: ${{ secrets.SERVER_USER }}
+          PRIVATE_KEY: ${{ secrets.SERVER_PRIVATE_KEY }}
+        run: |
+          echo "$PRIVATE_KEY" > private_key.pem
+          chmod 600 private_key.pem
+          scp -i private_key.pem -r ./dist $USER@$HOST:/path/to/deploy
+          ssh -i private_key.pem $USER@$HOST "cd /path/to/deploy && npm install --production && pm2 restart app"
