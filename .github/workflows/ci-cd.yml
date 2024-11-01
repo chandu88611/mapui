@@ -23,30 +23,40 @@ jobs:
         with:
           node-version: '16'  # Specify your Node.js version
 
-      # Install dependencies
+      # Navigate to the backend folder
+      - name: Change Directory to Backend
+        run: cd backend
+
+      
       - name: Install Dependencies
-        run: npm install
+        run: |
+          cd backend
+          npm install
 
-      # Run tests
-      - name: Run Tests
-        run: npm test  # Replace with your test script
+   
+      # - name: Run Tests
+      #   run: |
+      #     cd backend
+      #     npm test  # Replace with your test script or remove if not needed
 
-      # Build the application (if applicable)
+    
       - name: Build Application
-        run: npm run build  # Replace with your build script if needed
+        run: |
+          cd backend
+          npm run build  # Replace with your build script if needed
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      # Deploy logic (e.g., SSH to server or use a deployment tool like rsync)
       - name: Deploy to Server
         env:
           HOST: ${{ secrets.SERVER_HOST }}
           USER: ${{ secrets.SERVER_USER }}
           PRIVATE_KEY: ${{ secrets.SERVER_PRIVATE_KEY }}
         run: |
+          cd backend
           echo "$PRIVATE_KEY" > private_key.pem
           chmod 600 private_key.pem
-          scp -i private_key.pem -r ./dist $USER@$HOST:/path/to/deploy
-          ssh -i private_key.pem $USER@$HOST "cd /path/to/deploy && npm install --production && pm2 restart app"
+          scp -i private_key.pem -r . $USER@$HOST:/path/to/deploy/backend
+          ssh -i private_key.pem $USER@$HOST "cd /path/to/deploy/backend && npm install --production && pm2 restart app"
