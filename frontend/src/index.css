@@ -1,0 +1,53 @@
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+.custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: lightblue transparent;
+  }
+  
+  /* Custom Scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: lightblue;
+    border-radius: 10px;
+  }
+  
+  .custom-scrollbar:hover::-webkit-scrollbar-thumb {
+    background-color: #87cefa;
+  }
+  
+
+  .status-badge {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+  }
+  
+  .status-pending {
+    background-color: #ffc107;
+    color: #fff;
+  }
+  
+  .status-partiallypaid {
+    background-color: #17a2b8;
+    color: #fff;
+  }
+  
+  .status-paid {
+    background-color: #28a745;
+    color: #fff;
+  }
+  
+  .status-cancelled {
+    background-color: #dc3545;
+    color: #fff;
+  }
+  

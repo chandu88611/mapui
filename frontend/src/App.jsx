@@ -1,19 +1,29 @@
-import { Container } from 'react-bootstrap';
-import { Outlet } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
+import { BrowserRouter } from "react-router-dom";
+import Router from "./Router";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Header from './components/Header';
-
-const App = () => {
+function App() {
   return (
-    <>
-      <Header />
-      <ToastContainer />
-      <Container className='my-2'>
-        <Outlet />
-      </Container>
-    </>
+    <Provider store={store}>
+<ToastContainer
+position="top-right"
+autoClose={5000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="light"
+/>
+      <BrowserRouter>
+        <Router />
+      </BrowserRouter>
+    </Provider>
   );
-};
+}
 
 export default App;
