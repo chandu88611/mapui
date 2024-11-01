@@ -1,9 +1,7 @@
 import csv
 
-# Define file path
 file_path = "sample_weather_data.csv"
 
-# Sample data
 data = [
     ["timestamp", "temperature", "humidity", "windSpeed", "precipitation", "pressure", "location"],
     ["2023-10-01T08:00:00Z", 20.5, 60, 5.2, 0, 1012.5, "New York"],
@@ -23,7 +21,6 @@ data = [
     ["2023-10-03T12:00:00Z", 29.0, 47, 8.0, 0, 1011.0, "Los Angeles"]
 ]
 
-# Write data to CSV
 with open(file_path, mode='w', newline='') as file:
     writer = csv.writer(file)
     writer.writerows(data)
