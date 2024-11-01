@@ -2,7 +2,8 @@ import axios from "axios";
 
 // Create the axios instance
 const axiosInstance = axios.create({
-  baseURL: `http://localhost:5000/api/`,
+  // baseURL: `http://localhost:5000/api/`,
+  baseURL: `http://3.88.187.8:5000/api/`,
   // baseURL: `https://crm-backend-8w9h.onrender.com/api/`,
 
   headers: {

@@ -13,6 +13,7 @@ const WeatherDataTable = () => {
   const [searchDate, setSearchDate] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingWeather, setEditingWeather] = useState(null);
+  const [form] = Form.useForm(); // Create form instance
 
   const { data, isLoading, isError, refetch } = useFetchWeatherDataQuery({
     page,
@@ -47,6 +48,14 @@ const WeatherDataTable = () => {
   // Open/close modal for editing or creating weather data
   const handleOpenModal = (weather = null) => {
     setEditingWeather(weather);
+    if (weather) {
+      form.setFieldsValue({
+        ...weather,
+        timestamp: moment(weather.timestamp),
+      });
+    } else {
+      form.resetFields();
+    }
     setIsModalVisible(true);
   };
 
@@ -181,12 +190,9 @@ const WeatherDataTable = () => {
         footer={null}
       >
         <Form
+          form={form} // Use the form instance
           layout="vertical"
           onFinish={handleFormSubmit}
-          initialValues={{
-            ...editingWeather,
-            timestamp: editingWeather ? moment(editingWeather.timestamp) : null, // Set DatePicker value
-          }}
         >
           <Form.Item name="timestamp" label="Timestamp" rules={[{ required: true, message: "Please select a date and time" }]}>
             <DatePicker showTime />
