@@ -1,7 +1,25 @@
 import React, { useState } from "react";
-import { Table, Pagination, Input, Button, Modal, Form, DatePicker, InputNumber, message, Upload, Popconfirm } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
-import { useCreateWeatherMutation, useFetchWeatherDataQuery, useImportWeatherDataMutation, useDeleteWeatherMutation, useUpdateWeatherMutation } from "../../../redux/services/weatherApi";
+import {
+  Table,
+  Pagination,
+  Input,
+  Button,
+  Modal,
+  Form,
+  DatePicker,
+  InputNumber,
+  message,
+  Upload,
+  Popconfirm,
+} from "antd";
+import { DownloadOutlined, UploadOutlined } from "@ant-design/icons";
+import {
+  useCreateWeatherMutation,
+  useFetchWeatherDataQuery,
+  useImportWeatherDataMutation,
+  useDeleteWeatherMutation,
+  useUpdateWeatherMutation,
+} from "../../../redux/services/weatherApi";
 import moment from "moment"; // For date handling
 
 const { Search } = Input;
@@ -128,7 +146,12 @@ const WeatherDataTable = () => {
   };
 
   const columns = [
-    { title: "Timestamp", dataIndex: "timestamp", key: "timestamp", render: (text) => moment(text).format("YYYY-MM-DD HH:mm") },
+    {
+      title: "Timestamp",
+      dataIndex: "timestamp",
+      key: "timestamp",
+      render: (text) => moment(text).format("YYYY-MM-DD HH:mm"),
+    },
     { title: "Temperature", dataIndex: "temperature", key: "temperature" },
     { title: "Humidity", dataIndex: "humidity", key: "humidity" },
     { title: "Wind Speed", dataIndex: "windSpeed", key: "windSpeed" },
@@ -159,21 +182,51 @@ const WeatherDataTable = () => {
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading weather data.</div>;
 
+  const handleDownloadSampleCSV = () => {
+    const csvContent = `timestamp,temperature,humidity,windSpeed,precipitation,pressure,location
+2024-11-01T12:00:00Z,20,65,10,0.5,1015,Sample Location`;
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "sample_weather_data.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
   return (
     <div>
       <h2>Weather Data</h2>
       <div style={{ marginBottom: 16, display: "flex", gap: "8px" }}>
-        <Search placeholder="Search by location" onChange={handleSearchLocationChange} style={{ width: 200 }} />
+        <Search
+          placeholder="Search by location"
+          onChange={handleSearchLocationChange}
+          style={{ width: 200 }}
+        />
         <DatePicker onChange={handleDateChange} placeholder="Filter by date" />
         <Button type="primary" onClick={() => handleOpenModal()}>
           Add Weather Data
         </Button>
-        <Upload accept=".csv" showUploadList={false} customRequest={({ file }) => handleUpload({ file })}>
+        <Upload
+          accept=".csv"
+          showUploadList={false}
+          customRequest={({ file }) => handleUpload({ file })}
+        >
           <Button icon={<UploadOutlined />}>Upload CSV</Button>
         </Upload>
+
+        <Button icon={<DownloadOutlined />} onClick={handleDownloadSampleCSV}>
+          Download Smaple CSV
+        </Button>
       </div>
 
-      <Table columns={columns} dataSource={data?.data} rowKey="_id" pagination={false} />
+      <Table
+        columns={columns}
+        dataSource={data?.data}
+        rowKey="_id"
+        pagination={false}
+      />
 
       <Pagination
         current={page}
@@ -194,25 +247,64 @@ const WeatherDataTable = () => {
           layout="vertical"
           onFinish={handleFormSubmit}
         >
-          <Form.Item name="timestamp" label="Timestamp" rules={[{ required: true, message: "Please select a date and time" }]}>
+          <Form.Item
+            name="timestamp"
+            label="Timestamp"
+            rules={[
+              { required: true, message: "Please select a date and time" },
+            ]}
+          >
             <DatePicker showTime />
           </Form.Item>
-          <Form.Item name="temperature" label="Temperature (°C)" rules={[{ required: true, message: "Please enter the temperature" }]}>
+          <Form.Item
+            name="temperature"
+            label="Temperature (°C)"
+            rules={[
+              { required: true, message: "Please enter the temperature" },
+            ]}
+          >
             <InputNumber style={{ width: "100%" }} />
           </Form.Item>
-          <Form.Item name="humidity" label="Humidity (%)" rules={[{ required: true, message: "Please enter the humidity level" }]}>
+          <Form.Item
+            name="humidity"
+            label="Humidity (%)"
+            rules={[
+              { required: true, message: "Please enter the humidity level" },
+            ]}
+          >
             <InputNumber style={{ width: "100%" }} />
           </Form.Item>
-          <Form.Item name="windSpeed" label="Wind Speed (km/h)" rules={[{ required: true, message: "Please enter the wind speed" }]}>
+          <Form.Item
+            name="windSpeed"
+            label="Wind Speed (km/h)"
+            rules={[{ required: true, message: "Please enter the wind speed" }]}
+          >
             <InputNumber style={{ width: "100%" }} />
           </Form.Item>
-          <Form.Item name="precipitation" label="Precipitation (mm)" rules={[{ required: true, message: "Please enter the precipitation level" }]}>
+          <Form.Item
+            name="precipitation"
+            label="Precipitation (mm)"
+            rules={[
+              {
+                required: true,
+                message: "Please enter the precipitation level",
+              },
+            ]}
+          >
             <InputNumber style={{ width: "100%" }} />
           </Form.Item>
-          <Form.Item name="pressure" label="Pressure (hPa)" rules={[{ required: true, message: "Please enter the pressure" }]}>
+          <Form.Item
+            name="pressure"
+            label="Pressure (hPa)"
+            rules={[{ required: true, message: "Please enter the pressure" }]}
+          >
             <InputNumber style={{ width: "100%" }} />
           </Form.Item>
-          <Form.Item name="location" label="Location" rules={[{ required: true, message: "Please enter the location" }]}>
+          <Form.Item
+            name="location"
+            label="Location"
+            rules={[{ required: true, message: "Please enter the location" }]}
+          >
             <Input placeholder="Enter location" />
           </Form.Item>
           <Form.Item>

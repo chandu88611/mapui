@@ -27,7 +27,7 @@ const WeatherDashboard = () => {
 
   // Initialize Socket.IO connection
   useEffect(() => {
-    const socket = io("http://localhost:5000"); // Replace with your server URL
+    const socket = io("http://3.88.187.8:5000"); // Replace with your server URL
 
     // Listen for new data
     socket.on("weatherDataCreated", (newData) => {
@@ -162,19 +162,21 @@ const WeatherDashboard = () => {
         </div>
       </div>
 
-      <div style={{ padding: "20px 0" }}>
+      <div style={{ overflow: "auto", width: "100%" }}>
         <Search
           placeholder="Search by location"
           onChange={(e) => setSearchTerm(e.target.value)}
           style={{ width: "300px", marginBottom: "10px" }}
         />
-        <Table
-          columns={columns}
-          dataSource={filteredData.slice((currentPage - 1) * pageSize, currentPage * pageSize)}
-          rowKey="_id"
-          pagination={false}
-          style={{ backgroundColor: "#fff", borderRadius: "8px", boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)" }}
-        />
+        <div style={{ overflowX: "auto" }}>
+          <Table
+            columns={columns}
+            dataSource={filteredData.slice((currentPage - 1) * pageSize, currentPage * pageSize)}
+            rowKey="_id"
+            pagination={false}
+            style={{ backgroundColor: "#fff", borderRadius: "8px", boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)" }}
+          />
+        </div>
         <Pagination
           current={currentPage}
           pageSize={pageSize}
@@ -196,6 +198,12 @@ styleSheet.innerText = `
     }
     100% {
       transform: translateX(-50%);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .ant-table-wrapper {
+      overflow-x: auto;
     }
   }
 `;

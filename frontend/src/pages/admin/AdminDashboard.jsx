@@ -27,7 +27,8 @@ const WeatherDashboard = () => {
 
   // Initialize Socket.IO connection
   useEffect(() => {
-    const socket = io("http://localhost:5000"); // Replace with your server URL
+    // const socket = io("http://localhost:5000"); // Replace with your server URL
+    const socket = io("http://3.88.187.8:5000"); // Replace with your server URL
 
     // Listen for new data
     socket.on("weatherDataCreated", (newData) => {

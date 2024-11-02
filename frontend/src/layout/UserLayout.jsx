@@ -41,11 +41,7 @@ export default function UserLayout() {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <FiMenu
-            className="menu-trigger"
-            onClick={() => setCollapsed(!collapsed)}
-            style={{ fontSize: "24px", cursor: "pointer" }}
-          />
+     
           <span style={{ fontWeight: "bold", fontSize: "1.2rem" }}>User Portal</span>
         </div>
 
@@ -54,12 +50,7 @@ export default function UserLayout() {
           <Badge count={5}>
             <AiOutlineBell style={{ fontSize: "24px", cursor: "pointer" }} />
           </Badge>
-          <Dropdown overlay={userMenu} trigger={['click']}>
-            <div style={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
-              <Avatar src="/assets/images/profile-avatar.jpg" alt="Profile Avatar" size="large" />
-              <span style={{ marginLeft: 8 }}>User</span>
-            </div>
-          </Dropdown>
+ 
           <Button type="primary" icon={<AiOutlineLogin />} onClick={() => navigate("/login")}>
             Login
           </Button>
@@ -68,7 +59,7 @@ export default function UserLayout() {
 
       <Content
         style={{
-          marginTop: 64, // Offset for fixed header
+          marginTop: 64,  
           padding: "24px 16px",
           background: "#fff",
           minHeight: "280px",

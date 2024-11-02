@@ -51,6 +51,7 @@ export default function AdminLayout() {
       >
         <div className="logo" style={{ padding: "20px", textAlign: "center" }}>
           <img src="/assets/images/logo/logo.svg" alt="Logo" style={{ maxWidth: "100%", height: "auto" }} />
+          
         </div>
 
         <Menu
