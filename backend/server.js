@@ -1,4 +1,3 @@
-
 import path from 'path';
 import express from 'express';
 import http from 'http';
@@ -20,12 +19,11 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : ['http://localhost:3000', 'http://localhost:5173'],
+    origin: '*',  // Allow requests from all domains
   },
 });
 
 const port = process.env.PORT || 5000;
-
 
 const apiLimiter = rateLimit({
   windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,  
@@ -33,11 +31,7 @@ const apiLimiter = rateLimit({
   message: 'Too many requests from this IP, please try again later.',
 });
 
-
-// app.use(cors({ origin: process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : ['http://localhost:3000', 'http://localhost:5173'] }));
-
-
-app.use(cors());
+app.use(cors());  // Allow requests from all domains
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
